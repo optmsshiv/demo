@@ -68,10 +68,10 @@ input:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(74,124,111,.12)}
   <div class="body">
     <?php if ($success): ?>
       <div class="ok">✅ <strong>Password updated successfully!</strong><br>You can now log in with your new password.</div>
-      <a href="/library/login" class="back">← Back to Login</a>
+      <a href="/login" class="back">← Back to Login</a>
     <?php elseif (!$token): ?>
       <div class="err">⚠ Invalid reset link. Please request a new one.</div>
-      <a href="/library/login" class="back">← Back to Login</a>
+      <a href="/login" class="back">← Back to Login</a>
     <?php else: ?>
       <?php if ($error): ?><div class="err">⚠ <?= htmlspecialchars($error) ?></div><?php endif; ?>
       <form method="POST">
@@ -86,7 +86,7 @@ input:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(74,124,111,.12)}
         </div>
         <button class="btn" type="submit">🔒 Set New Password</button>
       </form>
-      <a href="/library/login" class="back">← Back to Login</a>
+      <a href="/login" class="back">← Back to Login</a>
     <?php endif; ?>
   </div>
 </div>
