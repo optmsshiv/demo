@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/db.php'; // apna DB connection
+require_once __DIR__ . '/includes/db.php'; // apna DB connection
 
 function randName() {
     $names = ['Aman','Rohit','Priya','Neha','Vikas','Pooja','Rahul','Sneha','Arjun','Kiran'];
