@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 06, 2026 at 11:15 AM
+-- Generation Time: Apr 07, 2026 at 10:51 PM
 -- Server version: 5.7.44-48
 -- PHP Version: 8.3.26
 
@@ -123,6 +123,20 @@ CREATE TABLE `expenses` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `holidays`
+--
+
+CREATE TABLE `holidays` (
+  `id` int(11) NOT NULL,
+  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `date` date NOT NULL,
+  `type` varchar(100) COLLATE utf8_unicode_ci DEFAULT 'Holiday',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `invoices`
 --
 
@@ -147,6 +161,20 @@ CREATE TABLE `invoices` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `notices`
+--
+
+CREATE TABLE `notices` (
+  `id` int(11) NOT NULL,
+  `title` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `message` text COLLATE utf8_unicode_ci NOT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `notifications`
 --
 
@@ -167,11 +195,29 @@ CREATE TABLE `notifications` (
 
 CREATE TABLE `password_resets` (
   `id` int(11) NOT NULL,
-  `staff_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `token` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `staff_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `expires_at` datetime NOT NULL,
   `used` tinyint(1) DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_links`
+--
+
+CREATE TABLE `payment_links` (
+  `id` int(11) NOT NULL,
+  `token` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `student_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `amount` int(11) NOT NULL,
+  `upi_id` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `note` varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
+  `status` varchar(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `paid_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -432,11 +478,23 @@ ALTER TABLE `expenses`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `holidays`
+--
+ALTER TABLE `holidays`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `invoices`
 --
 ALTER TABLE `invoices`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_invoice_student` (`student_id`);
+
+--
+-- Indexes for table `notices`
+--
+ALTER TABLE `notices`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `notifications`
@@ -450,6 +508,15 @@ ALTER TABLE `notifications`
 ALTER TABLE `password_resets`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `token` (`token`);
+
+--
+-- Indexes for table `payment_links`
+--
+ALTER TABLE `payment_links`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `token` (`token`),
+  ADD KEY `idx_token` (`token`),
+  ADD KEY `idx_student` (`student_id`);
 
 --
 -- Indexes for table `qr_tokens`
@@ -550,6 +617,18 @@ ALTER TABLE `audit_log`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `holidays`
+--
+ALTER TABLE `holidays`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `notices`
+--
+ALTER TABLE `notices`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
@@ -559,6 +638,12 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `password_resets`
 --
 ALTER TABLE `password_resets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `payment_links`
+--
+ALTER TABLE `payment_links`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
